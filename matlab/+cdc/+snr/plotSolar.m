@@ -71,7 +71,7 @@ text(b, 0.97, 0.95, sprintf(['whole area (0.22…10 µm) = E_SC·W(10 µm) = %.0
     'shaded area = E_SC·(Wmax − Wmin)\n   = %.0f × (%.4f − %.4f)\n   = %.1f W/m²  ← enters stage 4'], ...
     t.E_SC * t.W(end), t.E_SC, r.W_max, r.W_min, eBand), "Units", "normalized", ...
     "HorizontalAlignment", "right", "VerticalAlignment", "top", "FontName", "Consolas", "FontSize", 9, "Color", INK);
-text(b, 0.97, 0.62, sprintf("the spline's wiggles near 0.4 µm come from uneven\ntable steps there; W(λ) itself (panel a) is smooth"), ...
+text(b, 0.97, 0.36, sprintf("the spline's wiggles near 0.4 µm come from uneven\ntable steps there; W(λ) itself (panel a) is smooth"), ...
     "Units", "normalized", "HorizontalAlignment", "right", "VerticalAlignment", "top", "FontSize", 8, "Color", INK2);
 xlim(b, [0.2 3]); ylim(b, [0 inf]);
 xlabel(b, "wave length λ, µm"); ylabel(b, "spectral irradiance above atmosphere, W/(m²·µm)");
@@ -98,9 +98,10 @@ barh(c, yy, vals, 0.55, "FaceColor", MODEL, "EdgeColor", "none", "BaseValue", 1e
 set(c, "XScale", "log");
 for i = 1:n
     text(c, vals(i) * 1.15, yy(i), sprintf("%.4g W/m²", vals(i)), "Color", INK, "FontSize", 9);
-    text(c, 2e-2, yy(i) + 0.42, steps{i, 1}, "Color", INK2, "FontSize", 8.5);
+    text(c, 2e-2, yy(i) + 0.3, steps{i, 1}, "Color", INK2, "FontSize", 8.5, "VerticalAlignment", "bottom");
 end
-xlim(c, [1e-2 2e4]); ylim(c, [-0.6 n - 0.1]); yticks(c, []);
+xlim(c, [1e-2 2e4]); ylim(c, [-0.6 n - 0.05]); yticks(c, []);
+c.XMinorGrid = "off"; c.XMinorTick = "off";
 xlabel(c, "irradiance, W/m² (log scale)");
 style(c, "(c) What becomes of it - stages 3 to 8");
 
