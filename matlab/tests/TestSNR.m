@@ -102,6 +102,36 @@ classdef TestSNR < matlab.unittest.TestCase
             tc.verifyEqual(actual, expected);
         end
 
+        function inBandSolarConstantIsBehindStage4(tc)
+            % where the absolute value comes from: E_SC = 1400 W/m² x the Annex B table
+            p = cdc.snr.defaultInputs();
+            r = cdc.snr.calculate(p);
+            t = cdc.snr.solarTable();
+            e = cdc.snr.inBandSolarConstant(p.lam_min, p.lam_max);
+            tc.verifyEqual(t.E_SC, 1400);
+            tc.verifyEqual(e, t.E_SC * (r.W_max - r.W_min), "RelTol", 1e-12);
+            tc.verifyEqual(e, 581.777, "AbsTol", 5e-4);
+            zS = deg2rad(r.zS_deg);
+            tc.verifyEqual(r.E_Edir, e * p.tau_At^(1/cos(zS)) * cos(zS), "RelTol", 1e-12);
+        end
+
+        function spectrumIntegratesBackToTheTable(tc)
+            x = linspace(0.5e-6, 0.885e-6, 20001);
+            tc.verifyEqual(trapz(x * 1e6, cdc.snr.solarSpectralIrradiance(x)), 581.777, "AbsTol", 1e-3);
+            [L, R, avg] = cdc.snr.solarTableSteps();
+            t = cdc.snr.solarTable();
+            tc.verifyEqual(sum(avg .* (R - L) * 1e6), t.E_SC * t.W(end), "RelTol", 1e-12);
+        end
+
+        function solarFigure(tc)
+            f = fullfile(tempdir, "cdc_solar_test.png");
+            fig = cdc.snr.plotSolar(cdc.snr.defaultInputs("lam_max", 1.0e-6), f, false);
+            tc.addTeardown(@() close(fig));
+            tc.verifyEqual(numel(findobj(fig, "Type", "axes")), 4);
+            info = dir(f);
+            tc.verifyGreaterThan(info.bytes, 10000);
+        end
+
         function runSnrReturnsResults(tc)
             [r, p] = runSnr("D", 0.2);
             tc.verifyEqual(p.D, 0.2);

@@ -38,6 +38,28 @@ def solar_fraction(lam: float) -> float:
     return float(_W(lam))
 
 
+def in_band_solar_constant(lam_min: float, lam_max: float) -> float:
+    """E_SC·(W(λmax) − W(λmin)), W/m²: the part of the 1400 W/m² inside the operating range.
+
+    This is the absolute value behind stage 4: E_Edir = this × τAt^sec(zS) × cos(zS).
+    """
+    return E_SC * (solar_fraction(lam_max) - solar_fraction(lam_min))
+
+
+def solar_spectral_irradiance(lam):
+    """E_SC·dW/dλ, W/(m²·µm): the solar spectrum above the atmosphere implied by the table
+    (derivative of the cubic spline; λ in m)."""
+    return E_SC * _W.derivative()(lam) * 1e-6
+
+
+def solar_table_steps():
+    """Average spectral irradiance in each table interval, E_SC·ΔW/Δλ, W/(m²·µm).
+
+    Read straight from the two arrays - no interpolation. Returns (λ_left, λ_right, value), λ in m.
+    """
+    return SOLAR_LAMBDA[:-1], SOLAR_LAMBDA[1:], E_SC * np.diff(SOLAR_W) / (np.diff(SOLAR_LAMBDA) * 1e6)
+
+
 class InvalidInputs(ValueError):
     def __init__(self, problems: list[str]):
         super().__init__("Invalid SNR inputs:\n  - " + "\n  - ".join(problems))

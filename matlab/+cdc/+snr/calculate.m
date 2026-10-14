@@ -14,7 +14,8 @@ if check
         error("cdc:snr:invalidInputs", "Invalid SNR inputs:\n  - %s", strjoin(problems, "\n  - "));
     end
 end
-E_SC = 1400;        % solar constant, W/m² (Annex B)
+sun = cdc.snr.solarTable();
+E_SC = sun.E_SC;    % solar constant, 1400 W/m² (stage 4 / Annex B p. 22)
 K_B = 1.38e-23;     % Boltzmann constant, J/K (Annex B)
 clipped = strings(0, 1);
 

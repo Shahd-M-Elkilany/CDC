@@ -90,6 +90,39 @@ disp(cdc.snr.report(p, r))
 | Digital processor | `p_DP` | pDP | 8 | bits |
 | Videopath MTF | `Tx`, `Ty` | Tx, Ty | 0.14, 0.22 | – |
 
+### The solar constant - where it comes from and where it goes
+
+![Solar constant figure](docs/solar_constant.png)
+
+The model uses **two separate pieces** of the document:
+
+| What | Value | Where in EGS YZH MAN 129 00 | In the code |
+|---|---|---|---|
+| **Absolute value** - solar constant E_SC | 1400 W/m² (whole spectrum, top of atmosphere) | §5.2 stage 4 (p. 13); Annex B "Constants used in the program" (p. 22) | `E_SC` (Python `cdc.snr.model`), `cdc.snr.solarTable().E_SC` (MATLAB) |
+| **Relative distribution** W(λ) - part of E_SC in 0…λ | 40 pairs λ = 0.22…10 µm, W = 0…0.9995 | Annex B "Spectral distribution of solar constant" (p. 23) | `SOLAR_LAMBDA`, `SOLAR_W` / `solarTable().lambda`, `.W` |
+
+The table gives only **fractions**; the watts come from E_SC. Stage 3 reads W(λmin) and
+W(λmax) off the cubic spline (Mathcad `cspline` + `interp`), and stage 4 multiplies:
+
+E_SC·(Wmax − Wmin) = 1400 × (0.6516 − 0.2360) = **581.8 W/m²** in the 0.5–0.885 µm band above
+the atmosphere, then × τAt^sec zS × cos zS = 0.640 × 0.5 → **E_Edir = 186.169 W/m²** on the ground.
+
+Panel (b) is the derivative of the table, E_SC·dW/dλ: the solar spectrum the table implies
+(about 2100 W/(m²·µm) at 0.46–0.50 µm, read straight from the table steps). Its whole area is the 1400 W/m²; the shaded area
+is the 581.8 W/m². Panel (d) shows how the SNR responds when the band edge moves.
+
+```bash
+python -m cdc snr --plot                 # saves snr_solar.png (pip install -e ".[plot]")
+python -m cdc snr --plot band.png --set lam_max=1e-6
+```
+
+```matlab
+runSnr("--plot")                         % figure window
+runSnr("--plot", "lam_max", 1e-6)
+cdc.snr.plotSolar(cdc.snr.defaultInputs(), "solar.png")
+e = cdc.snr.inBandSolarConstant(0.5e-6, 0.885e-6)   % 581.777 W/m²
+```
+
 Inputs outside the section 6 ranges are rejected with a list of the broken rules
 (e.g. sun elevation must be 10–90°, ρD ≤ ρL, pDP ≤ pADC, ∆y ≤ ∆zy). Saturation in
 stages 12–13 (CCD voltage, ADC input range) is applied as in the document and

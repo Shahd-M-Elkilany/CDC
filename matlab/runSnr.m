@@ -5,6 +5,17 @@ function [r, p] = runSnr(varargin)
 %   runSnr("my_inputs.json")        inputs from JSON (same format as the Python CLI)
 %   [r, p] = runSnr(...)            return results and inputs, print nothing
 %   runSnr("--list")                the 27 input names, units and Annex B defaults
+%   runSnr("--plot", ...)           solar-constant figure (any inputs after "--plot")
+%   runSnr("--plot", "D", 0.2) or runSnr("--plot", "my_inputs.json")
+if nargin >= 1 && string(varargin{1}) == "--plot"
+    if nargin == 2 && endsWith(string(varargin{2}), ".json")
+        [~, p] = runSnr(varargin{2});
+    else
+        p = cdc.snr.defaultInputs(varargin{2:end});
+    end
+    cdc.snr.plotSolar(p);
+    return
+end
 if nargin == 1 && (endsWith(string(varargin{1}), ".json"))
     data = jsondecode(fileread(varargin{1}));
     if isfield(data, "inputs"), data = data.inputs; end
