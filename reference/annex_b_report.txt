@@ -1,0 +1,81 @@
+SIGNAL/NOISE RATIO  -  EGS YZH MAN 129 00 (Video.mcd method)
+
+INPUT DATA
+  Operating range of electro-magnetic waves
+    Left boundary of irradiation range                                         λmin =       5e-07 m
+    Right boundary of irradiation range                                        λmax =    8.85e-07 m
+  Characteristics of imaged region and conditions of its illumination
+    Sun elevation angle                                                          βS =          30 deg
+    Reflection coefficient (albedo) for the light strip of a test pattern        ρL =        0.25
+    Reflection coefficient (albedo) for the dark strip of a test pattern         ρD =         0.2
+  Characteristics of atmosphere
+    Atmospheric transmission coefficient                                        τAt =         0.8
+  Characteristics of optical system
+    Transmission coefficient                                                    τOs =         0.6
+    Effective diameter of entrance aperture                                       D =       0.155 m
+    Focal distance                                                                f =        0.86 m
+  Characteristics of a photoreceiver (CCD-line)
+    Step of photosites                                                          ∆zy =       1e-05 m
+    Dimension of a photosite along CCD-line                                      ∆y =       1e-05 m
+    Dimension of a photosite across CCD-line                                     ∆x =       1e-05 m
+    Lines' frequency                                                             νx =         900 Hz
+    Relative time of line's exposure                                             Kt =           1
+    Number of photosites in a line                                              NEl =        6000
+    Exposure, equivalent to root mean square value of noise                   HnCCD =       4e-07 J/m²
+    Coefficient of irradiation energy transformation into electrons              RQ =   1.563e+18 electron/J
+    Coefficient of electrons' transformation into voltage                        KA =     3.2e-06 V/electron
+    Voltage of saturation                                                   UCCDmax =           3 V
+  Amplifier characteristics
+    Coefficient of amplification by voltage                                      KU =           3
+    Temperature                                                                  TU =         300 K
+    Equivalent resistance                                                      Requ =       10000 Ω
+  Characteristics of analog-digital converter
+    Maximal allowable input voltage                                         UADCmax =           1 V
+    Number of bits for output code                                             pADC =          12
+  Characteristics of digital processor
+    Number of bits for output code                                              pDP =           8
+  Value of videopath modulation transfer's resultant function
+    Across CCD-line                                                              Tx =        0.14
+    Along CCD-line                                                               Ty =        0.22
+
+STAGES OF CALCULATION (section 5.2)
+   1  Zenith distance of the Sun                                      zS =          60 deg
+   2  Line's exposure time                                            ∆t =  0.00111111 s
+   3  Part of solar constant within 0..λmin                         Wmin =       0.236
+   3  Part of solar constant within 0..λmax                         Wmax =    0.651555
+   4  Region's irradiance with direct solar irradiation            EEdir =     186.169 W/m²
+   5  Region's irradiance with dispersed solar irradiation         EEdis =     20.4466 W/m²
+   6  Overall irradiance of a region                                  EΣ =     206.615 W/m²
+   7  Radiant emittance of a test pattern's light strip               RL =     51.6538 W/m²
+   7  Radiant emittance of a test pattern's dark strip                RD =     41.3231 W/m²
+   8  Irradiance in photoreceiver plane, uniform background ρL       EL1 =    0.201349 W/m²
+   8  Irradiance in photoreceiver plane, uniform background ρD       ED1 =    0.161079 W/m²
+   9  Photoreceiver plane's exposure, ρL                             HL1 = 0.000223721 J/m²
+   9  Photoreceiver plane's exposure, ρD                             HD1 = 0.000178977 J/m²
+  10  Irradiation energy on a photosite, ρL                          PL1 = 2.23721e-14 J
+  10  Irradiation energy on a photosite, ρD                          PD1 = 1.78977e-14 J
+  11  Number of electrons in a photosite, ρL                        NeL1 =     34967.7
+  11  Number of electrons in a photosite, ρD                        NeD1 =     27974.1
+  12  Voltage on the output of CCD-line, ρL                       UccdL1 =    0.111897 V
+  12  Voltage on the output of CCD-line, ρD                       UccdD1 =   0.0895172 V
+  13  Voltage on the output of amplifier, ρL                      UampL1 =     0.33569 V
+  13  Voltage on the output of amplifier, ρD                      UampD1 =    0.268552 V
+  14  Modulation of the test pattern in the region                    mE =    0.111111
+  15  Image modulation, strips perpendicular to SC track             mPx =   0.0155556
+  16  Image modulation, strips parallel to SC track                  mPy =   0.0244444
+  17  Amplifier output, light strip perpendicular to track        UampLx =     0.30682 V
+  18  Amplifier output, dark strip perpendicular to track         UampDx =    0.297421 V
+  19  Amplifier output, light strip parallel to track             UampLy =    0.309506 V
+  20  Amplifier output, dark strip parallel to track              UampDy =    0.294735 V
+  21  Photon noise (RMS) at amplifier output                         UnF =  0.00179517 V
+  22  Photoreceiver noise (RMS) at amplifier output                UnCCD = 0.000600192 V
+  23  Amplifier noise (RMS)                                        UnAMP = 2.99038e-05 V
+  24  ADC quantization noise (RMS), at amplifier output            UnADC = 7.04773e-05 V
+  25  Digital processor quantization noise (RMS)                    UnDP =  0.00105716 V
+  26  Overall noise (RMS) at amplifier output                         Un =  0.00220348 V
+
+CALCULATION RESULTS - signal/noise ratio
+  27  Uniform background with albedo ρL (model a)                     µL =    152.3454
+  28  Uniform background with albedo ρD (model a)                     µD =    121.8763
+  29  Test pattern, strips perpendicular to SC track (model c)        µx =      4.2657
+  30  Test pattern, strips parallel to SC track (model b)             µy =      6.7032

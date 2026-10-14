@@ -1,0 +1,16 @@
+function W = solarFraction(lam)
+%SOLARFRACTION W(λ): part of the solar constant within the wave length range 0..λ (λ in m).
+%   Table of Annex B (page 23), interpolated with a not-a-knot cubic spline,
+%   which is what Mathcad cspline + interp computes (W(0.885 µm) = 0.652).
+persistent LAMBDA FRACTION
+if isempty(LAMBDA)
+    LAMBDA = [0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.41 0.42 ...
+              0.43 0.44 0.45 0.46 0.48 0.50 0.55 0.60 0.65 0.70 0.75 0.80 ...
+              0.90 1.0 1.1 1.2 1.4 1.6 1.8 2.0 2.5 3.0 4.0 5.0 6.0 7.0 8.0 10.0] * 1e-6;
+    FRACTION = [0 0.001 0.002 0.005 0.012 0.023 0.037 0.055 0.072 0.091 0.105 ...
+                0.116 0.133 0.146 0.161 0.176 0.206 0.236 0.308 0.377 0.44 ...
+                0.495 0.545 0.59 0.661 0.718 0.766 0.804 0.861 0.899 0.924 ...
+                0.942 0.966 0.979 0.991 0.9954 0.9973 0.998 0.9988 0.9995];
+end
+W = spline(LAMBDA, FRACTION, lam);
+end

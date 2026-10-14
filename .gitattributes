@@ -1,0 +1,4 @@
+# Shared reference files are compared character for character by both test suites
+reference/* text eol=lf
+*.m   text eol=lf
+*.py  text eol=lf

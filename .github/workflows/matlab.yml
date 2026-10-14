@@ -1,0 +1,20 @@
+name: matlab
+# MathWorks provides MATLAB on GitHub-hosted runners free for public repositories.
+on:
+  push:
+    paths: ["matlab/**", "reference/**", ".github/workflows/matlab.yml"]
+  pull_request:
+    paths: ["matlab/**", "reference/**", ".github/workflows/matlab.yml"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: matlab-actions/setup-matlab@v2
+        with:
+          release: R2023a
+      - uses: matlab-actions/run-build@v2
+        with:
+          tasks: lint test
+          startup-options: -sd matlab
