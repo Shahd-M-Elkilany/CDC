@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "CDC: run app (this PC only)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "streamlit",
+            "args": ["run", "${workspaceFolder}/src/cdc/app.py",
+                     "--server.address", "localhost", "--server.port", "8501",
+                     "--browser.gatherUsageStats", "false"],
+            "env": {"CDC_DB": "${workspaceFolder}/data/cdc_master.db"},
+            "justMyCode": true
+        },
+        {
+            "name": "CDC: serve to lab network",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "cdc",
+            "args": ["serve"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "CDC: evaluate baseline (CLI)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "cdc",
+            "args": ["eval"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "CDC: debug current test file",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": ["${file}", "-v"],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

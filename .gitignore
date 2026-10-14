@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Environments
+.venv/
+venv/
+.env
+
+# Tools
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# CDC runtime data (the live master sheet - back it up, don't commit it)
+data/
+*.db
+*.db-wal
+*.db-shm
+CDC_*.xlsx
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/

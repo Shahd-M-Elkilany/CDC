@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CDC: run tests",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} -m pytest -q",
+            "group": {"kind": "test", "isDefault": true},
+            "problemMatcher": []
+        },
+        {
+            "label": "CDC: lint",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} -m ruff check src tests",
+            "problemMatcher": []
+        },
+        {
+            "label": "CDC: check requirements (baseline)",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} -m cdc check",
+            "problemMatcher": []
+        }
+    ]
+}
