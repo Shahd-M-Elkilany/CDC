@@ -37,8 +37,12 @@ def snr_command(a) -> int:
         print(e, file=sys.stderr)
         return 2
     if a.plot:
-        from cdc.snr.plots import plot_solar
-        plot_solar(p, path=a.plot)
+        try:
+            from cdc.snr.plots import plot_solar
+            plot_solar(p, path=a.plot)
+        except ModuleNotFoundError as e:
+            print(f"--plot needs matplotlib ({e}); install it with:  pip install -e \".[plot]\"", file=sys.stderr)
+            return 3
         print(f"figure saved: {a.plot}")
         return 0
     if a.json:
