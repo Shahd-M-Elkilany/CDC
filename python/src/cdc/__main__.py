@@ -43,6 +43,10 @@ def snr_command(a) -> int:
 
 
 def main(argv=None) -> int:
+    # the report uses λ, ρ, τ, Ω ...: print UTF-8 even on consoles with a legacy code page (e.g. cp1256)
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser(prog="cdc", description="Concurrent Design Center")
     sub = ap.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("snr", help="signal/noise ratio (EGS YZH MAN 129 00)")
