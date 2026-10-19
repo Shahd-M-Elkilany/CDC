@@ -6,4 +6,7 @@ __pycache__/
 .ruff_cache/
 *.asv
 .DS_Store
-snr_solar.png
+# generated figures and MATLAB workspaces
+python/*.png
+matlab/*.png
+matlab/*.mat

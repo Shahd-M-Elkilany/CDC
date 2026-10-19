@@ -20,5 +20,11 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev]"
-      - run: python -m ruff check src tests
+      - run: python -m ruff check src tests examples
       - run: python -m pytest -q
+      - name: Example script and figure run headless
+        env:
+          MPLBACKEND: Agg
+        run: |
+          python examples/solar_figure.py
+          python -m cdc snr --plot
