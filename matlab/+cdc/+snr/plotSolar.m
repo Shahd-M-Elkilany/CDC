@@ -63,17 +63,17 @@ in = xs >= p.lam_min & xs <= p.lam_max;
 fill(b, [xs(in) fliplr(xs(in))]*1e6, [ys(in) zeros(1, nnz(in))], MODEL, "FaceAlpha", 0.18, "EdgeColor", "none");
 [L, R, avg] = cdc.snr.solarTableSteps();
 m = R <= 3e-6;
-sx = reshape([L(m); L(m); R(m); R(m)], 1, []) * 1e6;
-sy = reshape([zeros(1, nnz(m)); avg(m); avg(m); zeros(1, nnz(m))], 1, []);
+sx = reshape([L(m); R(m)], 1, []) * 1e6;          % one staircase outline, no drops to zero
+sy = reshape([avg(m); avg(m)], 1, []);
 hb = plot(b, sx, sy, "Color", TABLE, "LineWidth", 1.2);
 hl = plot(b, xs*1e6, ys, "Color", MODEL, "LineWidth", 2);
-text(b, 0.97, 0.95, sprintf(['whole area (0.22…10 µm) = E_SC·W(10 µm) = %.0f W/m²\n' ...
+text(b, 0.97, 0.95, sprintf(['whole area (0.22…10 µm) = E_SC·W(10 µm) = %.0f × %g = %.0f W/m²\n' ...
     'shaded area = E_SC·(Wmax − Wmin)\n   = %.0f × (%.4f − %.4f)\n   = %.1f W/m²  ← enters stage 4'], ...
-    t.E_SC * t.W(end), t.E_SC, r.W_max, r.W_min, eBand), "Units", "normalized", ...
+    t.E_SC, t.W(end), t.E_SC * t.W(end), t.E_SC, r.W_max, r.W_min, eBand), "Units", "normalized", ...
     "HorizontalAlignment", "right", "VerticalAlignment", "top", "FontName", "Consolas", "FontSize", 9, "Color", INK);
 text(b, 0.97, 0.36, sprintf("the spline's wiggles near 0.4 µm come from uneven\ntable steps there; W(λ) itself (panel a) is smooth"), ...
     "Units", "normalized", "HorizontalAlignment", "right", "VerticalAlignment", "top", "FontSize", 8, "Color", INK2);
-xlim(b, [0.2 3]); ylim(b, [0 inf]);
+xlim(b, [0.2 3]); ylim(b, [0 1.3 * max(ys)]);
 xlabel(b, "wave length λ, µm"); ylabel(b, "spectral irradiance above atmosphere, W/(m²·µm)");
 legend(b, [hl hb], ["spline: E_SC·dW/dλ", "table: E_SC·ΔW/Δλ per interval"], "Location", "east", "Box", "off");
 style(b, sprintf("(b) Where the absolute value comes from: E_SC = %.0f W/m² × table", t.E_SC));

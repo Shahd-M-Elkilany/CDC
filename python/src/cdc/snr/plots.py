@@ -97,15 +97,15 @@ def plot_solar(p: SNRInputs | None = None, path: str | None = None):
     # (b) the spectrum implied by the table; areas = W/m²
     left, right, avg = solar_table_steps()
     m = right <= 3e-6
-    b.bar(left[m] * 1e6, avg[m], width=(right[m] - left[m]) * 1e6, align="edge",
-          color="none", edgecolor=TABLE, lw=1.2, label="table: E_SC·ΔW/Δλ per interval")
+    edges = np.append(left[m], right[m][-1]) * 1e6
+    b.stairs(avg[m], edges, color=TABLE, lw=1.4, baseline=None, label="table: E_SC·ΔW/Δλ per interval")
     xs = np.linspace(SOLAR_LAMBDA[0], 3e-6, 3000)
     ys = solar_spectral_irradiance(xs)
     b.plot(xs * 1e6, ys, color=MODEL, lw=2, label="spline: E_SC·dW/dλ")
     inb = (xs >= p.lam_min) & (xs <= p.lam_max)
     b.fill_between(xs[inb] * 1e6, 0, ys[inb], color=MODEL, alpha=0.18, lw=0)
     b.text(0.97, 0.95,
-           f"whole area (0.22…10 µm) = E_SC·W(10 µm) = {E_SC * SOLAR_W[-1]:.0f} W/m²\n"
+           f"whole area (0.22…10 µm) = E_SC·W(10 µm) = {E_SC:.0f} × {SOLAR_W[-1]:g} = {E_SC * SOLAR_W[-1]:.0f} W/m²\n"
            f"shaded area = E_SC·(Wmax − Wmin)\n"
            f"   = {E_SC:.0f} × ({r.W_max:.4f} − {r.W_min:.4f})\n"
            f"   = {e_band:.1f} W/m²  ← enters stage 4",
@@ -113,7 +113,7 @@ def plot_solar(p: SNRInputs | None = None, path: str | None = None):
     b.text(0.97, 0.62, "the spline's wiggles near 0.4 µm come from uneven\n"
            "table steps there; W(λ) itself (panel a) is smooth",
            transform=b.transAxes, ha="right", va="top", fontsize=8, color=INK2)
-    b.set(xlim=(0.2, 3), ylim=(0, None), xlabel="wave length λ, µm",
+    b.set(xlim=(0.2, 3), ylim=(0, 1.3 * ys.max()), xlabel="wave length λ, µm",
           ylabel="spectral irradiance above atmosphere, W/(m²·µm)")
     b.legend(loc=(0.55, 0.32), fontsize=8.5, frameon=False)
     _style(b, f"(b) Where the absolute value comes from: E_SC = {E_SC:.0f} W/m² × table")
