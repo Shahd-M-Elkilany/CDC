@@ -1,0 +1,4 @@
+{
+    // VS Code offers to install these when the folder is opened
+    "recommendations": ["ms-python.python", "ms-python.debugpy", "ms-toolsai.jupyter", "MathWorks.language-matlab"]
+}

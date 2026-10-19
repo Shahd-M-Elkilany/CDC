@@ -1,0 +1,24 @@
+{
+    // Run and Debug panel (Ctrl+Shift+D): pick one and press F5
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "SNR: show solar-constant figure",
+            "type": "debugpy", "request": "launch", "module": "cdc",
+            "args": ["snr", "--show"],
+            "cwd": "${workspaceFolder}/python", "console": "integratedTerminal"
+        },
+        {
+            "name": "SNR: report (Annex B)",
+            "type": "debugpy", "request": "launch", "module": "cdc",
+            "args": ["snr"],
+            "cwd": "${workspaceFolder}/python", "console": "integratedTerminal"
+        },
+        {
+            "name": "SNR: solar figure script (examples/solar_figure.py)",
+            "type": "debugpy", "request": "launch",
+            "program": "${workspaceFolder}/python/examples/solar_figure.py",
+            "cwd": "${workspaceFolder}/python", "console": "integratedTerminal"
+        }
+    ]
+}

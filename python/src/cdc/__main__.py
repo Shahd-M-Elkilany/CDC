@@ -6,7 +6,8 @@ Command line:
     python -m cdc snr --set D=0.2 --set nu_x=1000
     python -m cdc snr --json              machine-readable results
     python -m cdc snr --list-inputs       the 27 input names, units and Annex B defaults
-    python -m cdc snr --plot [file.png]   solar-constant figure (needs matplotlib: pip install -e ".[plot]")
+    python -m cdc snr --plot [file.png]   save the solar-constant figure (needs matplotlib: pip install -e ".[plot]")
+    python -m cdc snr --show              open it in a window (zoom, pan, save)
 """
 from __future__ import annotations
 
@@ -36,14 +37,21 @@ def snr_command(a) -> int:
     except (KeyError, InvalidInputs) as e:
         print(e, file=sys.stderr)
         return 2
-    if a.plot:
+    if a.plot or a.show:
         try:
             from cdc.snr.plots import plot_solar
-            plot_solar(p, path=a.plot)
+            if a.show:
+                import matplotlib.pyplot as plt
+                plot_solar(p, path=a.plot, fig=plt.figure(num="Solar constant in the SNR model"))
+            else:
+                plot_solar(p, path=a.plot)
         except ModuleNotFoundError as e:
-            print(f"--plot needs matplotlib ({e}); install it with:  pip install -e \".[plot]\"", file=sys.stderr)
+            print(f"--plot/--show need matplotlib ({e}); install it with:  pip install -e \".[plot]\"", file=sys.stderr)
             return 3
-        print(f"figure saved: {a.plot}")
+        if a.plot:
+            print(f"figure saved: {a.plot}")
+        if a.show:
+            plt.show()
         return 0
     if a.json:
         print(json.dumps({"inputs": p.to_dict(), "results": r.to_dict()}, indent=2))
@@ -65,6 +73,7 @@ def main(argv=None) -> int:
     s.add_argument("--json", action="store_true", help="print JSON instead of the report")
     s.add_argument("--plot", nargs="?", const="snr_solar.png", metavar="FILE",
                    help="save the solar-constant figure (default snr_solar.png)")
+    s.add_argument("--show", action="store_true", help="open the solar-constant figure in a window")
     s.add_argument("--list-inputs", action="store_true", help="list the 27 inputs")
     s.set_defaults(func=snr_command)
     a = ap.parse_args(argv)

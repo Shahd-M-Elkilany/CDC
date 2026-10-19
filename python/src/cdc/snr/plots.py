@@ -56,8 +56,12 @@ def _style(ax, title):
     ax.yaxis.label.set_color(INK2)
 
 
-def plot_solar(p: SNRInputs | None = None, path: str | None = None):
-    """Build the four-panel figure; save it when `path` is given. Returns the Figure."""
+def plot_solar(p: SNRInputs | None = None, path: str | None = None, fig=None):
+    """Build the four-panel figure; save it when `path` is given. Returns the Figure.
+
+    `fig`: draw into an existing figure, e.g. ``plt.figure()`` to get a window or an inline
+    plot in VS Code / Jupyter. Without it a stand-alone Figure is made (no GUI needed).
+    """
     from matplotlib.figure import Figure
 
     p = p or SNRInputs()
@@ -65,7 +69,11 @@ def plot_solar(p: SNRInputs | None = None, path: str | None = None):
     lo, hi = p.lam_min * 1e6, p.lam_max * 1e6          # µm
     e_band = in_band_solar_constant(p.lam_min, p.lam_max)
 
-    fig = Figure(figsize=(13, 9), layout="constrained")
+    if fig is None:
+        fig = Figure(figsize=(13, 9), layout="constrained")
+    else:
+        fig.set_size_inches(13, 9)
+        fig.set_layout_engine("constrained")
     fig.suptitle("Solar constant in the SNR model  -  EGS YZH MAN 129 00, Annex B "
                  f"(λ = {lo:g}…{hi:g} µm, sun elevation {p.sun_elevation:g}°)",
                  fontsize=12, color=INK, x=0.01, ha="left")

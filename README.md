@@ -127,3 +127,19 @@ Inputs outside the section 6 ranges are rejected with a list of the broken rules
 (e.g. sun elevation must be 10–90°, ρD ≤ ρL, pDP ≤ pADC, ∆y ≤ ∆zy). Saturation in
 stages 12–13 (CCD voltage, ADC input range) is applied as in the document and
 reported in the output.
+
+### Showing the figure in VS Code
+
+Open the `cdc` folder in VS Code (**File → Open Folder**). The `.vscode` folder sets the
+interpreter to `python/.venv` and adds run buttons. VS Code offers the Python, Jupyter and
+MATLAB extensions the first time.
+
+| Way | How | Where the figure appears |
+|---|---|---|
+| **Run Cell** | open `python/examples/solar_figure.py`, click **Run Cell** above each `# %%` (or Shift+Enter) | Interactive window beside the code |
+| **Run and Debug** | Ctrl+Shift+D → pick *SNR: show solar-constant figure* → F5 | its own window (zoom, pan, save) |
+| **Terminal** | `cd python` then `.venv\Scripts\python -m cdc snr --show` | its own window |
+| **Image file** | `.venv\Scripts\python -m cdc snr --plot`, then click `python/snr_solar.png` | VS Code image tab |
+
+Add `--set lam_max=1e-6` (or any input) to `--show` / `--plot`, or edit the inputs cell in
+`solar_figure.py` and run it again.

@@ -137,3 +137,16 @@ def test_solar_figure(tmp_path):
     fig = plot_solar(SNRInputs(lam_max=1.0e-6), path=str(out))
     assert len(fig.axes) == 4
     assert out.stat().st_size > 10_000
+
+
+def test_solar_figure_into_an_existing_pyplot_figure():
+    """--show and the VS Code Run Cell script draw into a pyplot figure."""
+    mpl = pytest.importorskip("matplotlib")
+    mpl.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from cdc.snr.plots import plot_solar
+    fig = plt.figure()
+    assert plot_solar(SNRInputs(), fig=fig) is fig
+    assert len(fig.axes) == 4
+    plt.close(fig)
