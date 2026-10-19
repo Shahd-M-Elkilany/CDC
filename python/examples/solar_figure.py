@@ -8,11 +8,16 @@
 # `python examples/solar_figure.py` opens it in a window.
 
 # %% The two arrays from Annex B p. 23 and the solar constant
+import sys
+
 import matplotlib.pyplot as plt
 
 from cdc.snr import SNRInputs, calculate
 from cdc.snr.model import E_SC, SOLAR_LAMBDA, SOLAR_W, in_band_solar_constant
 from cdc.snr.plots import plot_solar
+
+if hasattr(sys.stdout, "reconfigure"):          # λ, µ, Ω on any Windows code page
+    sys.stdout.reconfigure(encoding="utf-8")
 
 print(f"E_SC = {E_SC:g} W/m²   ({len(SOLAR_LAMBDA)} table points, "
       f"λ = {SOLAR_LAMBDA[0]*1e6:g}…{SOLAR_LAMBDA[-1]*1e6:g} µm)")
